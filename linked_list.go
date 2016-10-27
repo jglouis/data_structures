@@ -44,12 +44,28 @@ func (node *Node) RemoveNode(searchValue int) *Node {
 	return deletedNode
 }
 
+// Search returns the first Node holding the given searchValue
+// Returns nil if none found
+func (node Node) Search(searchValue int) *Node {
+	current := &node
+	for current.next != nil {
+		if current.value == searchValue {
+			return current
+		}
+		current = current.next
+	}
+	return nil
+}
+
 func main() {
 
 	list := new(Node)
 	list.Add(1).Add(2).Add(3).Add(4).Add(5)
 
+	fmt.Println(list.Search(3).value)
+
 	fmt.Println(list)
 	list.RemoveNode(2)
 	fmt.Println(list)
+
 }
