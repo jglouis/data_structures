@@ -11,16 +11,16 @@ type Node struct {
 	value int
 }
 
-// Add adds a number to the end of the linked list
-func (el *Node) Add(number int) *Node {
-	node := &Node{nil, number}
-	el.next = node
-	return node
+// Add adds a new node holding given value number to the end of the linked list
+func (node *Node) Add(value int) *Node {
+	next := &Node{nil, value}
+	node.next = next
+	return next
 }
 
-func (el Node) String() string {
+func (node Node) String() string {
 	var str string
-	current := &el
+	current := &node
 	for current != nil {
 		str += strconv.Itoa(current.value)
 		current = current.next
@@ -28,9 +28,9 @@ func (el Node) String() string {
 	return str
 }
 
-// RemoveNode removes the first node with the searchvalue
-func RemoveNode(head **Node, searchValue int) *Node {
-	doublePointer := head
+// RemoveNode removes the first node in the list holding the given searchValue
+func (node *Node) RemoveNode(searchValue int) *Node {
+	doublePointer := &node
 	for *doublePointer != nil && (*doublePointer).value != searchValue {
 		doublePointer = &((*doublePointer).next)
 	}
@@ -50,6 +50,6 @@ func main() {
 	list.Add(1).Add(2).Add(3).Add(4).Add(5)
 
 	fmt.Println(list)
-	RemoveNode(&list, 2)
+	list.RemoveNode(2)
 	fmt.Println(list)
 }
