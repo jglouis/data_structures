@@ -28,6 +28,24 @@ func (node Node) String() string {
 	return str
 }
 
+// Insert insert a node at given index position
+func (node *Node) Insert(value, index int) {
+	nodeToInsert := new(Node)
+	nodeToInsert.value = value
+	var prev *Node
+	next := node
+	for ; index != 0; index-- {
+		prev = next
+		next = next.next
+	}
+	if prev == nil {
+		node = nodeToInsert
+	} else {
+		prev.next = nodeToInsert
+	}
+	nodeToInsert.next = next
+}
+
 // RemoveNode removes the first node in the list holding the given searchValue
 func (node *Node) RemoveNode(searchValue int) *Node {
 	doublePointer := &node
@@ -67,5 +85,6 @@ func main() {
 	fmt.Println(list)
 	list.RemoveNode(2)
 	fmt.Println(list)
-
+	list.Insert(9, 0)
+	fmt.Println(list)
 }
