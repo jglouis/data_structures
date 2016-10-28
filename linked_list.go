@@ -5,22 +5,41 @@ import (
 	"strconv"
 )
 
-// Node is a element of a linked list
+// List is a single linked list.
+type List struct {
+	head *Node
+	len  int
+}
+
+// Node is an element of a single linked list.
 type Node struct {
 	next  *Node
 	value int
 }
 
-// Add adds a new node holding given value number to the end of the linked list
-func (node *Node) Add(value int) *Node {
-	next := &Node{nil, value}
-	node.next = next
-	return next
+// New returns an initialized list.
+func New() *List { return new(List).Init() }
+
+// Init initializes or clears list l.
+func (l *List) Init() *List {
+	l.head = new(Node)
+	l.len = 0
+	return l
 }
 
-func (node Node) String() string {
+// Add adds a new node holding given value number to the end of the linked list
+func (l List) Add(value int) {
+	lastNode := l.head
+	for lastNode.next != nil {
+		lastNode = lastNode.next
+	}
+	next := &Node{nil, value}
+	lastNode.next = next
+}
+
+func (l List) String() string {
 	var str string
-	current := &node
+	current := l.head
 	for current != nil {
 		str += strconv.Itoa(current.value)
 		current = current.next
@@ -29,17 +48,17 @@ func (node Node) String() string {
 }
 
 // Insert insert a node at given index position
-func (node *Node) Insert(value, index int) {
+func (l *List) Insert(value, index int) {
 	nodeToInsert := new(Node)
 	nodeToInsert.value = value
 	var prev *Node
-	next := node
+	next := l.head
 	for ; index != 0; index-- {
 		prev = next
 		next = next.next
 	}
 	if prev == nil {
-		node = nodeToInsert
+		l.head = nodeToInsert
 	} else {
 		prev.next = nodeToInsert
 	}
@@ -47,8 +66,8 @@ func (node *Node) Insert(value, index int) {
 }
 
 // RemoveNode removes the first node in the list holding the given searchValue
-func (node *Node) RemoveNode(searchValue int) *Node {
-	doublePointer := &node
+func (l *List) RemoveNode(searchValue int) *Node {
+	doublePointer := &(l.head)
 	for *doublePointer != nil && (*doublePointer).value != searchValue {
 		doublePointer = &((*doublePointer).next)
 	}
@@ -64,8 +83,8 @@ func (node *Node) RemoveNode(searchValue int) *Node {
 
 // Search returns the first Node holding the given searchValue
 // Returns nil if none found
-func (node Node) Search(searchValue int) *Node {
-	current := &node
+func (l List) Search(searchValue int) *Node {
+	current := l.head
 	for current.next != nil {
 		if current.value == searchValue {
 			return current
@@ -77,13 +96,17 @@ func (node Node) Search(searchValue int) *Node {
 
 func main() {
 
-	list := new(Node)
-	list.Add(1).Add(2).Add(3).Add(4).Add(5)
+	list := New()
+	list.Add(1)
+	list.Add(2)
+	list.Add(3)
+	list.Add(4)
+	list.Add(5)
 
 	fmt.Println(list.Search(3).value)
 
 	fmt.Println(list)
-	list.RemoveNode(2)
+	list.RemoveNode(0)
 	fmt.Println(list)
 	list.Insert(9, 0)
 	fmt.Println(list)
